@@ -30,8 +30,10 @@ export default function CodeChecker() {
     );
   }
 
+  const containerClass = `flex flex-col items-center justify-center h-screen transition-all ${status === "invalid" ? "bg-red-900" : "bg-gray-950"}`;
+
   return (
-    <div className={\`flex flex-col items-center justify-center h-screen transition-all \${status === "invalid" ? "bg-red-900" : "bg-gray-950"}\`}>
+    <div className={containerClass}>
       <h1 className="text-4xl mb-4 text-white font-mono">Voer je code in</h1>
       <div className="flex gap-2">
         <input
