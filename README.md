@@ -1,19 +1,22 @@
-# Vercel Code Checker (n8n Webhook)
+# Vercel Code Checker (n8n Webhook, POST-only)
 
-- Voer een code in. Bij een juiste code speelt `success.mp4` af; bij fout kleurt het scherm rood.
-- Webhook URL (vast): `https://asmussen.app.n8n.cloud/webhook/992a293f-581e-4174-a65b-ccea1a2221bd?code=<CODE>`
-- API-route forceert Node runtime en probeert eerst **POST** (met code in body), valt terug op **GET**.
+- Gebruiker voert een code in.
+- Frontend doet POST naar `/api/check-code`.
+- API route doet een POST naar jouw n8n webhook, inclusief code als queryparam en body.
+- Response verwacht JSON: `{ "body": "true" }` of `{ "body": "false" }`.
 
 ## Installatie
+
 ```bash
 npm install
 npm run dev
 ```
 
-## Deploy
+## Deploy op Vercel
+
 - Push naar GitHub en importeer in Vercel.
-- Logs zie je onder **Project → Functions**.
+- Logs: Vercel dashboard → Functions.
 
 ## Debug
-- De UI toont tijdelijk een debug-paneel met de response van /api/check-code.
-- In server logs zie je errors via `console.error`.
+
+De UI toont een debug-paneel met de ruwe response uit n8n.

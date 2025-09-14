@@ -2,9 +2,9 @@ import { useState } from "react";
 
 export default function CodeChecker() {
   const [code, setCode] = useState("");
-  const [status, setStatus] = useState(null); // null | 'valid' | 'invalid'
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(null);
   const [debug, setDebug] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const checkCode = async () => {
     setLoading(true);
@@ -36,14 +36,9 @@ export default function CodeChecker() {
     );
   }
 
-  const containerClass = `min-h-screen flex flex-col items-center justify-center transition-colors duration-300 ${
-    status === "invalid" ? "bg-red-950" : "bg-gray-950"
-  }`;
-
   return (
-    <div className={containerClass}>
-      <h1 className="text-4xl mb-6 text-white font-mono tracking-wide">Voer je code in</h1>
-
+    <div className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-300 ${status === "invalid" ? "bg-red-950" : "bg-gray-950"}`}>
+      <h1 className="text-4xl mb-6 text-white font-mono">Voer je code in</h1>
       <div className="flex gap-3">
         <input
           type="text"
@@ -65,17 +60,12 @@ export default function CodeChecker() {
         <p className="text-red-300 mt-4 font-mono text-lg">Ongeldige code!</p>
       )}
 
-      {/* Debug pane - zichtbaar tijdens testen; verwijder voor productie als je wil */}
       {debug && (
         <div className="mt-8 max-w-2xl w-[90vw] bg-gray-900 text-gray-200 rounded-xl p-4 font-mono text-sm border border-gray-700">
-          <div className="opacity-70 mb-2">Debug (alleen zichtbaar voor jou):</div>
+          <div className="opacity-70 mb-2">Debug info:</div>
           <pre className="whitespace-pre-wrap break-words">{JSON.stringify(debug, null, 2)}</pre>
         </div>
       )}
-
-      <footer className="absolute bottom-4 text-gray-500 text-xs font-mono opacity-60">
-        Game Gate • Next.js + Tailwind
-      </footer>
     </div>
   );
 }
