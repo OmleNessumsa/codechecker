@@ -1,11 +1,14 @@
-
 import { useState } from "react";
 
 export default function CodeChecker() {
   const [code, setCode] = useState("");
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(null); // null | 'valid' | 'invalid'
+  const [loading, setLoading] = useState(false);
+  const [debug, setDebug] = useState(null);
 
   const checkCode = async () => {
+    setLoading(true);
+    setDebug(null);
     try {
       const res = await fetch("/api/check-code", {
         method: "POST",
@@ -13,43 +16,66 @@ export default function CodeChecker() {
         body: JSON.stringify({ code }),
       });
       const data = await res.json();
+      setDebug(data);
       setStatus(data.valid ? "valid" : "invalid");
     } catch (err) {
-      console.error("Error:", err);
       setStatus("invalid");
+      setDebug({ error: String(err) });
+    } finally {
+      setLoading(false);
     }
   };
 
   if (status === "valid") {
     return (
-      <div className="w-full h-screen bg-black flex items-center justify-center">
-        <video autoPlay controls className="w-full max-w-3xl rounded-xl shadow-xl">
+      <div className="w-full h-screen bg-black flex items-center justify-center p-6">
+        <video autoPlay controls className="w-full max-w-4xl rounded-2xl shadow-2xl">
           <source src="/success.mp4" type="video/mp4" />
         </video>
       </div>
     );
   }
 
-  const containerClass = `flex flex-col items-center justify-center h-screen transition-all ${status === "invalid" ? "bg-red-900" : "bg-gray-950"}`;
+  const containerClass = `min-h-screen flex flex-col items-center justify-center transition-colors duration-300 ${
+    status === "invalid" ? "bg-red-950" : "bg-gray-950"
+  }`;
 
   return (
     <div className={containerClass}>
-      <h1 className="text-4xl mb-4 text-white font-mono">Voer je code in</h1>
-      <div className="flex gap-2">
+      <h1 className="text-4xl mb-6 text-white font-mono tracking-wide">Voer je code in</h1>
+
+      <div className="flex gap-3">
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="text-lg px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+          placeholder="Bijv. 123456"
         />
         <button
           onClick={checkCode}
-          className="text-lg px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+          disabled={loading || !code}
+          className="text-xl px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white rounded-lg shadow-lg font-semibold"
         >
-          Verstuur
+          {loading ? "Checken..." : "Verstuur"}
         </button>
       </div>
-      {status === "invalid" && <p className="text-red-300 mt-4 font-mono">Ongeldige code!</p>}
+
+      {status === "invalid" && (
+        <p className="text-red-300 mt-4 font-mono text-lg">Ongeldige code!</p>
+      )}
+
+      {/* Debug pane - zichtbaar tijdens testen; verwijder voor productie als je wil */}
+      {debug && (
+        <div className="mt-8 max-w-2xl w-[90vw] bg-gray-900 text-gray-200 rounded-xl p-4 font-mono text-sm border border-gray-700">
+          <div className="opacity-70 mb-2">Debug (alleen zichtbaar voor jou):</div>
+          <pre className="whitespace-pre-wrap break-words">{JSON.stringify(debug, null, 2)}</pre>
+        </div>
+      )}
+
+      <footer className="absolute bottom-4 text-gray-500 text-xs font-mono opacity-60">
+        Game Gate • Next.js + Tailwind
+      </footer>
     </div>
   );
 }
