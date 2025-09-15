@@ -18,14 +18,13 @@ export default async function handler(req, res) {
       body: JSON.stringify({ code }),
     });
 
-    const text = await response.text();
-    let parsed = null;
-    try {
-      parsed = JSON.parse(text);
-    } catch {}
+    const data = await response.json();
 
-    const valid = parsed && parsed.body === "true";
-    return res.status(200).json({ valid, raw: parsed || text });
+    return res.status(200).json({
+      valid: data.body === "true",
+      videoUrl: data.videoUrl || null,   // nieuw
+      raw: data,
+    });
   } catch (err) {
     console.error("Webhook call failed:", err);
     return res.status(500).json({ valid: false, error: String(err) });
