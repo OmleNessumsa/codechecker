@@ -45,7 +45,7 @@ export default function CodeChecker() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-          placeholder="Bijv. 123456"
+          placeholder="Bijv. 0000 0000 0000 0000"
         />
         <button
           onClick={checkCode}
@@ -57,7 +57,7 @@ export default function CodeChecker() {
       </div>
 
       {status === "invalid" && (
-        <p className="text-red-300 mt-4 font-mono text-lg">Ongeldige code!</p>
+        <p className="text-red-300 mt-4 font-mono text-lg">🔴 Access denied! Refresh page to try again.</p>
       )}
 
       {debug && (
