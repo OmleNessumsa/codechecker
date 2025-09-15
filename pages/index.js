@@ -52,7 +52,7 @@ export default function CodeChecker() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-          placeholder="Bijv. 0000 0000 0000 0000"
+          placeholder="0000 0000 0000 0000"
         />
         <button
           onClick={checkCode}
