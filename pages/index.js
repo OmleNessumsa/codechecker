@@ -3,8 +3,9 @@ import { useState } from "react";
 export default function CodeChecker() {
   const [code, setCode] = useState("");
   const [status, setStatus] = useState(null);
-  const [debug, setDebug] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null); // nieuw
   const [loading, setLoading] = useState(false);
+  const [debug, setDebug] = useState(null);
 
   const checkCode = async () => {
     setLoading(true);
@@ -17,7 +18,13 @@ export default function CodeChecker() {
       });
       const data = await res.json();
       setDebug(data);
-      setStatus(data.valid ? "valid" : "invalid");
+
+      if (data.valid && data.videoUrl) {
+        setVideoUrl(data.videoUrl);
+        setStatus("valid");
+      } else {
+        setStatus("invalid");
+      }
     } catch (err) {
       setStatus("invalid");
       setDebug({ error: String(err) });
@@ -26,11 +33,11 @@ export default function CodeChecker() {
     }
   };
 
-  if (status === "valid") {
+  if (status === "valid" && videoUrl) {
     return (
       <div className="w-full h-screen bg-black flex items-center justify-center p-6">
         <video autoPlay controls className="w-full max-w-4xl rounded-2xl shadow-2xl">
-          <source src="/success.mp4" type="video/mp4" />
+          <source src={videoUrl} type="video/mp4" />
         </video>
       </div>
     );
@@ -45,7 +52,7 @@ export default function CodeChecker() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-          placeholder="Bijv. 0000 0000 0000 0000"
+          placeholder="Bijv. 123456"
         />
         <button
           onClick={checkCode}
@@ -57,7 +64,7 @@ export default function CodeChecker() {
       </div>
 
       {status === "invalid" && (
-        <p className="text-red-300 mt-4 font-mono text-lg">🔴 Access denied! Refresh page to try again.</p>
+        <p className="text-red-300 mt-4 font-mono text-lg">Ongeldige code!</p>
       )}
 
       {debug && (
