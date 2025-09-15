@@ -51,7 +51,7 @@ export default function CodeChecker() {
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-teal-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+          className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
           placeholder="0000 0000 0000 0000"
         />
         <button
@@ -68,7 +68,7 @@ export default function CodeChecker() {
       )}
 
       {debug && (
-        <div className="mt-8 max-w-2xl w-[90vw] bg-gray-900 text-gray-200 rounded-xl p-4 font-mono text-sm border border-teal-700">
+        <div className="mt-8 max-w-2xl w-[90vw] bg-gray-900 text-teal-800 rounded-xl p-4 font-mono text-sm border border-teal-700">
           <div className="opacity-70 mb-2">Debug info:</div>
           <pre className="whitespace-pre-wrap break-words">{JSON.stringify(debug, null, 2)}</pre>
         </div>
