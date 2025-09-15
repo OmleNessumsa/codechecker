@@ -45,26 +45,26 @@ export default function CodeChecker() {
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-300 ${status === "invalid" ? "bg-red-950" : "bg-gray-950"}`}>
-      <h1 className="text-4xl mb-6 text-white font-mono">Voer je code in</h1>
+      <h1 className="text-4xl mb-6 text-white font-mono">Enter Code:</h1>
       <div className="flex gap-3">
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className="text-xl px-5 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-          placeholder="Bijv. 123456"
+          placeholder="Bijv. 0000 0000 0000 0000"
         />
         <button
           onClick={checkCode}
           disabled={loading || !code}
           className="text-xl px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white rounded-lg shadow-lg font-semibold"
         >
-          {loading ? "Checken..." : "Verstuur"}
+          {loading ? "Validating..." : "Send"}
         </button>
       </div>
 
       {status === "invalid" && (
-        <p className="text-red-300 mt-4 font-mono text-lg">Ongeldige code!</p>
+        <p className="text-red-300 mt-4 font-mono text-lg">Unauthorized! Refresh to try again.</p>
       )}
 
       {debug && (
